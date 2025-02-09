@@ -7,6 +7,7 @@ import {
   Noticia,
   updateNoticia,
 } from "@/actions/noticias";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 type NProps = {
@@ -23,6 +24,8 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
     fonte: "",
   });
   const [editingNoticia, setEditingNoticia] = useState<Noticia | null>(null);
+
+  const router = useRouter();
 
   const handleCreate = async () => {
     const res = await createNoticia(newNoticia);
@@ -82,7 +85,7 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {noticias && noticias.map((noticia) => (
-                  <tr key={`noticia_${noticia.id_noticia}`} className="hover:bg-gray-50">
+                  <tr key={`noticia_${noticia.id_noticia}`} onClick={() => router.push(`/noticias/${noticia.id_noticia}/sentimentos`)} className="hover:bg-gray-50 hover:cursor-pointer">
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{noticia.id_noticia}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {criptomoedas.find((c) => c.id_cripto === noticia.id_cripto)?.simbolo || "N/A"}
