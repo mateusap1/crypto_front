@@ -5,6 +5,7 @@ export interface Noticia {
   tema: string;
   noticia: string;
   fonte: string;
+  score_medio: number;
 }
 
 export interface Criptomoeda {

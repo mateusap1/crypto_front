@@ -22,6 +22,7 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
     tema: "",
     noticia: "",
     fonte: "",
+    score_medio: 0.0,
   });
   const [editingNoticia, setEditingNoticia] = useState<Noticia | null>(null);
 
@@ -37,7 +38,7 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
     }
   };
 
-  const handleDelete = async (e: React.SyntheticEvent,id: number) => {
+  const handleDelete = async (e: React.SyntheticEvent, id: number) => {
     e.stopPropagation();
     if (confirm("Are you sure you want to delete this news?")) {
       const res = await deleteNoticia(id);
@@ -58,12 +59,12 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
   const handleUpdate = async () => {
     if (!editingNoticia) return;
 
-    const res = await updateNoticia(editingNoticia.id_noticia, editingNoticia)
+    const res = await updateNoticia(editingNoticia.id_noticia, editingNoticia);
 
     if (res.ok) {
       window.location.reload();
     } else {
-      console.error('Error updating noticia:', await res.text());
+      console.error("Error updating noticia:", await res.text());
     }
   };
 
@@ -76,42 +77,83 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Criptomoeda</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tema</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Notícia</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fonte</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    ID
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Criptomoeda
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Data
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Tema
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Notícia
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Fonte
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Score
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Ações
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {noticias && noticias.map((noticia) => (
-                  <tr key={`noticia_${noticia.id_noticia}`} onClick={() => router.push(`/noticias/${noticia.id_noticia}/sentimentos`)} className="hover:bg-gray-50 hover:cursor-pointer">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{noticia.id_noticia}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {criptomoedas.find((c) => c.id_cripto === noticia.id_cripto)?.simbolo || "N/A"}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{noticia.data_publicacao}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{noticia.tema}</td>
-                    <td className="px-6 py-4 text-sm text-gray-900">{noticia.noticia}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{noticia.fonte}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                      <button
-                        onClick={(e) => handleEdit(e, noticia)}
-                        className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-md"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={(e) => handleDelete(e, noticia.id_noticia)}
-                        className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-md"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                {noticias &&
+                  noticias.map((noticia) => (
+                    <tr
+                      key={`noticia_${noticia.id_noticia}`}
+                      onClick={() =>
+                        router.push(
+                          `/noticias/${noticia.id_noticia}/sentimentos`
+                        )
+                      }
+                      className="hover:bg-gray-50 hover:cursor-pointer"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {noticia.id_noticia}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {criptomoedas.find(
+                          (c) => c.id_cripto === noticia.id_cripto
+                        )?.simbolo || "N/A"}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {noticia.data_publicacao}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {noticia.tema}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-900">
+                        {noticia.noticia}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {noticia.fonte}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {noticia.score_medio?.toFixed(2)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                        <button
+                          onClick={(e) => handleEdit(e, noticia)}
+                          className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-md"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={(e) => handleDelete(e, noticia.id_noticia)}
+                          className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-md"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
@@ -122,71 +164,106 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
           <h2 className="text-xl font-semibold mb-6">Add New Notícia</h2>
           <form className="space-y-4">
             <div>
-              <label htmlFor="id_cripto" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="id_cripto"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Criptomoeda
               </label>
               <select
                 id="id_cripto"
                 value={newNoticia.id_cripto}
-                onChange={(e) => setNewNoticia({ ...newNoticia, id_cripto: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  setNewNoticia({
+                    ...newNoticia,
+                    id_cripto: parseInt(e.target.value),
+                  })
+                }
                 className="mt-1 block w-full p-2 text-base border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
               >
-                {criptomoedas && criptomoedas.map((crypto) => (
-                  <option key={`crypto_${crypto.id_cripto}`} value={crypto.id_cripto}>
-                    {crypto.simbolo}
-                  </option>
-                ))}
+                {criptomoedas &&
+                  criptomoedas.map((crypto) => (
+                    <option
+                      key={`crypto_${crypto.id_cripto}`}
+                      value={crypto.id_cripto}
+                    >
+                      {crypto.simbolo}
+                    </option>
+                  ))}
               </select>
             </div>
 
             <div>
-              <label htmlFor="data_publicacao" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="data_publicacao"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Data
               </label>
               <input
                 type="date"
                 id="data_publicacao"
                 value={newNoticia.data_publicacao}
-                onChange={(e) => setNewNoticia({ ...newNoticia, data_publicacao: e.target.value })}
+                onChange={(e) =>
+                  setNewNoticia({
+                    ...newNoticia,
+                    data_publicacao: e.target.value,
+                  })
+                }
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
 
             <div>
-              <label htmlFor="tema" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="tema"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Tema
               </label>
               <input
                 type="text"
                 id="tema"
                 value={newNoticia.tema}
-                onChange={(e) => setNewNoticia({ ...newNoticia, tema: e.target.value })}
+                onChange={(e) =>
+                  setNewNoticia({ ...newNoticia, tema: e.target.value })
+                }
                 className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
 
             <div>
-              <label htmlFor="noticia" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="noticia"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Notícia
               </label>
               <textarea
                 id="noticia"
                 value={newNoticia.noticia}
-                onChange={(e) => setNewNoticia({ ...newNoticia, noticia: e.target.value })}
+                onChange={(e) =>
+                  setNewNoticia({ ...newNoticia, noticia: e.target.value })
+                }
                 rows={4}
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
 
             <div>
-              <label htmlFor="fonte" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="fonte"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Fonte
               </label>
               <input
                 type="text"
                 id="fonte"
                 value={newNoticia.fonte}
-                onChange={(e) => setNewNoticia({ ...newNoticia, fonte: e.target.value })}
+                onChange={(e) =>
+                  setNewNoticia({ ...newNoticia, fonte: e.target.value })
+                }
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
@@ -208,13 +285,21 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
               <h2 className="text-xl font-semibold mb-6">Edit Notícia</h2>
               <form className="space-y-4">
                 <div>
-                  <label htmlFor="edit_id_cripto" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="edit_id_cripto"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Criptomoeda
                   </label>
                   <select
                     id="edit_id_cripto"
                     value={editingNoticia.id_cripto}
-                    onChange={(e) => setEditingNoticia({ ...editingNoticia, id_cripto: parseInt(e.target.value) })}
+                    onChange={(e) =>
+                      setEditingNoticia({
+                        ...editingNoticia,
+                        id_cripto: parseInt(e.target.value),
+                      })
+                    }
                     className="mt-1 block w-full p-2 border border-gray-300 text-base focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
                   >
                     {criptomoedas.map((crypto) => (
@@ -226,53 +311,85 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
                 </div>
 
                 <div>
-                  <label htmlFor="edit_data_publicacao" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="edit_data_publicacao"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Data
                   </label>
                   <input
                     type="date"
                     id="edit_data_publicacao"
                     value={editingNoticia.data_publicacao}
-                    onChange={(e) => setEditingNoticia({ ...editingNoticia, data_publicacao: e.target.value })}
+                    onChange={(e) =>
+                      setEditingNoticia({
+                        ...editingNoticia,
+                        data_publicacao: e.target.value,
+                      })
+                    }
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="edit_tema" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="edit_tema"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Tema
                   </label>
                   <input
                     type="text"
                     id="edit_tema"
                     value={editingNoticia.tema}
-                    onChange={(e) => setEditingNoticia({ ...editingNoticia, tema: e.target.value })}
+                    onChange={(e) =>
+                      setEditingNoticia({
+                        ...editingNoticia,
+                        tema: e.target.value,
+                      })
+                    }
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="edit_noticia" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="edit_noticia"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Notícia
                   </label>
                   <textarea
                     id="edit_noticia"
                     value={editingNoticia.noticia}
-                    onChange={(e) => setEditingNoticia({ ...editingNoticia, noticia: e.target.value })}
+                    onChange={(e) =>
+                      setEditingNoticia({
+                        ...editingNoticia,
+                        noticia: e.target.value,
+                      })
+                    }
                     rows={4}
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="edit_fonte" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="edit_fonte"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Fonte
                   </label>
                   <input
                     type="text"
                     id="edit_fonte"
                     value={editingNoticia.fonte}
-                    onChange={(e) => setEditingNoticia({ ...editingNoticia, fonte: e.target.value })}
+                    onChange={(e) =>
+                      setEditingNoticia({
+                        ...editingNoticia,
+                        fonte: e.target.value,
+                      })
+                    }
                     className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
