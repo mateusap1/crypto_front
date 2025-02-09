@@ -42,9 +42,9 @@ export async function updateSentimento(
   });
 }
 
-export async function deleteSentimento(id_noticia: number, id_usuario: number) {
+export async function deleteSentimento(id_noticia: number, id_sentimento: number) {
   return await fetch(
-    `http://localhost:8000/sentimentos/${id_noticia}/${id_usuario}`,
+    `http://localhost:8000/sentimentos/${id_noticia}/${id_sentimento}`,
     {
       method: "DELETE",
     }
