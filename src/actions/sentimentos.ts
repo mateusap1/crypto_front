@@ -1,4 +1,5 @@
 export interface Sentimento {
+  id_sentimento: number;
   id_usuario: number;
   sentimento: string;
   score_sentimento: number;
@@ -10,17 +11,23 @@ export type Usuario = {
   email: string;
 };
 
-export async function createSentimento(id_noticia: number, data: Sentimento) {
+export async function createSentimento(
+  id_noticia: number,
+  data: Omit<Sentimento, "id_sentimento">
+) {
   return await fetch("http://localhost:8000/sentimentos/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({id_noticia, ...data}),
+    body: JSON.stringify({ id_noticia, ...data }),
   });
 }
 
-export async function updateSentimento(id_noticia: number, data: Sentimento) {
+export async function updateSentimento(
+  id_noticia: number,
+  data: Omit<Sentimento, "id_sentimento">
+) {
   return await fetch("http://localhost:8000/sentimentos/", {
     method: "PUT",
     headers: {

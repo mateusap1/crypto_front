@@ -15,17 +15,25 @@ type SentimentosProps = {
   id_noticia: number;
 };
 
-export default function Sentimentos({ sentimentos, usuarios, id_noticia }: SentimentosProps) {
+export default function Sentimentos({
+  sentimentos,
+  usuarios,
+  id_noticia,
+}: SentimentosProps) {
   // State for creating a new sentimento.
   // Note: We omit the id_noticia since it's provided as a prop.
-  const [newSentimento, setNewSentimento] = useState<Omit<Sentimento, "id_noticia">>({
+  const [newSentimento, setNewSentimento] = useState<
+    Omit<Sentimento, "id_sentimento">
+  >({
     id_usuario: usuarios.length ? usuarios[0].id_usuario : 0,
     sentimento: "",
     score_sentimento: 0,
   });
 
   // State for editing an existing sentimento.
-  const [editingSentimento, setEditingSentimento] = useState<Sentimento | null>(null);
+  const [editingSentimento, setEditingSentimento] = useState<Sentimento | null>(
+    null
+  );
 
   const handleCreate = async () => {
     // Combine the passed-in id_noticia with the rest of the newSentimento data.
@@ -90,9 +98,13 @@ export default function Sentimentos({ sentimentos, usuarios, id_noticia }: Senti
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
                 {sentimentos.map((s) => (
-                  <tr key={`${id_noticia}-${s.id_usuario}`} className="hover:bg-gray-50">
+                  <tr
+                    key={`sentimento-${s.id_sentimento}`}
+                    className="hover:bg-gray-50"
+                  >
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      {usuarios.find((u) => u.id_usuario === s.id_usuario)?.nome || s.id_usuario}
+                      {usuarios.find((u) => u.id_usuario === s.id_usuario)
+                        ?.nome || s.id_usuario}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       {s.sentimento}
@@ -126,14 +138,20 @@ export default function Sentimentos({ sentimentos, usuarios, id_noticia }: Senti
           <h2 className="text-xl font-semibold mb-6">Add New Sentimento</h2>
           <form className="space-y-4">
             <div>
-              <label htmlFor="id_usuario" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="id_usuario"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Usuário
               </label>
               <select
                 id="id_usuario"
                 value={newSentimento.id_usuario}
                 onChange={(e) =>
-                  setNewSentimento({ ...newSentimento, id_usuario: parseInt(e.target.value) })
+                  setNewSentimento({
+                    ...newSentimento,
+                    id_usuario: parseInt(e.target.value),
+                  })
                 }
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               >
@@ -146,7 +164,10 @@ export default function Sentimentos({ sentimentos, usuarios, id_noticia }: Senti
             </div>
 
             <div>
-              <label htmlFor="sentimento" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="sentimento"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Sentimento
               </label>
               <input
@@ -154,14 +175,20 @@ export default function Sentimentos({ sentimentos, usuarios, id_noticia }: Senti
                 id="sentimento"
                 value={newSentimento.sentimento}
                 onChange={(e) =>
-                  setNewSentimento({ ...newSentimento, sentimento: e.target.value })
+                  setNewSentimento({
+                    ...newSentimento,
+                    sentimento: e.target.value,
+                  })
                 }
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
 
             <div>
-              <label htmlFor="score_sentimento" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="score_sentimento"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Score
               </label>
               <input
@@ -170,7 +197,10 @@ export default function Sentimentos({ sentimentos, usuarios, id_noticia }: Senti
                 id="score_sentimento"
                 value={newSentimento.score_sentimento}
                 onChange={(e) =>
-                  setNewSentimento({ ...newSentimento, score_sentimento: parseFloat(e.target.value) })
+                  setNewSentimento({
+                    ...newSentimento,
+                    score_sentimento: parseFloat(e.target.value),
+                  })
                 }
                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
@@ -193,7 +223,10 @@ export default function Sentimentos({ sentimentos, usuarios, id_noticia }: Senti
               <h2 className="text-xl font-semibold mb-6">Edit Sentimento</h2>
               <form className="space-y-4">
                 <div>
-                  <label htmlFor="edit_id_usuario" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="edit_id_usuario"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Usuário
                   </label>
                   <select
@@ -216,7 +249,10 @@ export default function Sentimentos({ sentimentos, usuarios, id_noticia }: Senti
                 </div>
 
                 <div>
-                  <label htmlFor="edit_sentimento" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="edit_sentimento"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Sentimento
                   </label>
                   <input
@@ -234,7 +270,10 @@ export default function Sentimentos({ sentimentos, usuarios, id_noticia }: Senti
                 </div>
 
                 <div>
-                  <label htmlFor="edit_score_sentimento" className="block text-sm font-medium text-gray-700">
+                  <label
+                    htmlFor="edit_score_sentimento"
+                    className="block text-sm font-medium text-gray-700"
+                  >
                     Score
                   </label>
                   <input
@@ -272,7 +311,6 @@ export default function Sentimentos({ sentimentos, usuarios, id_noticia }: Senti
             </div>
           </div>
         )}
-
       </div>
     </div>
   );

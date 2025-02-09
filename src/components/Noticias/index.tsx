@@ -37,7 +37,8 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (e: React.SyntheticEvent,id: number) => {
+    e.stopPropagation();
     if (confirm("Are you sure you want to delete this news?")) {
       const res = await deleteNoticia(id);
 
@@ -49,7 +50,8 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
     }
   };
 
-  const handleEdit = (noticia: Noticia) => {
+  const handleEdit = (e: React.SyntheticEvent, noticia: Noticia) => {
+    e.stopPropagation();
     setEditingNoticia(noticia);
   };
 
@@ -96,13 +98,13 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{noticia.fonte}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                       <button
-                        onClick={() => handleEdit(noticia)}
+                        onClick={(e) => handleEdit(e, noticia)}
                         className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-md"
                       >
                         Edit
                       </button>
                       <button
-                        onClick={() => handleDelete(noticia.id_noticia)}
+                        onClick={(e) => handleDelete(e, noticia.id_noticia)}
                         className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-md"
                       >
                         Delete
