@@ -1,8 +1,8 @@
 import Sentimentos from "@/components/Sentimentos";
 import { Sentimento, Usuario } from "@/actions/sentimentos";
 
-const SentimentosPage = async ({ params }: { params: { id_noticia: string } }) => {
-  const id_noticia = Number(params.id_noticia);
+const SentimentosPage = async ({ params }: { params: Promise<{ id_noticia: string }> }) => {
+  const id_noticia = Number((await params).id_noticia);
 
   const sentimentosRes = await fetch(`http://localhost:8000/noticias/${id_noticia}/sentimentos`);
   const sentimentos: Sentimento[] = await sentimentosRes.json();
