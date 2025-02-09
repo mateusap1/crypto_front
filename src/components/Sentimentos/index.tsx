@@ -8,6 +8,7 @@ import {
   Sentimento,
   Usuario,
 } from "@/actions/sentimentos";
+import ScoreSlider from "../ScoreSlider";
 
 type SentimentosProps = {
   sentimentos: Sentimento[];
@@ -64,7 +65,7 @@ export default function Sentimentos({
 
   const handleUpdate = async () => {
     if (!editingSentimento) return;
-    const res = await updateSentimento(id_noticia, editingSentimento);
+    const res = await updateSentimento(editingSentimento);
 
     if (res.ok) {
       window.location.reload();
@@ -191,18 +192,14 @@ export default function Sentimentos({
               >
                 Score
               </label>
-              <input
-                type="number"
-                step="0.01"
-                id="score_sentimento"
+              <ScoreSlider
                 value={newSentimento.score_sentimento}
-                onChange={(e) =>
+                onChange={(value) =>
                   setNewSentimento({
                     ...newSentimento,
-                    score_sentimento: parseFloat(e.target.value),
+                    score_sentimento: value,
                   })
                 }
-                className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               />
             </div>
 
@@ -276,18 +273,14 @@ export default function Sentimentos({
                   >
                     Score
                   </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    id="edit_score_sentimento"
+                  <ScoreSlider
                     value={editingSentimento.score_sentimento}
-                    onChange={(e) =>
+                    onChange={(value) =>
                       setEditingSentimento({
                         ...editingSentimento,
-                        score_sentimento: parseFloat(e.target.value),
+                        score_sentimento: value,
                       })
                     }
-                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   />
                 </div>
 

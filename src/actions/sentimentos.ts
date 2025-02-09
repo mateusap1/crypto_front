@@ -24,17 +24,14 @@ export async function createSentimento(
   });
 }
 
-export async function updateSentimento(
-  id_noticia: number,
-  data: Omit<Sentimento, "id_sentimento">
-) {
+export async function updateSentimento(data: Sentimento) {
   return await fetch("http://localhost:8000/sentimentos/", {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      id_noticia,
+      id_sentimento: data.id_sentimento,
       id_usuario: data.id_usuario,
       novo_sentimento: data.sentimento,
       novo_score: data.score_sentimento,
@@ -42,7 +39,10 @@ export async function updateSentimento(
   });
 }
 
-export async function deleteSentimento(id_noticia: number, id_sentimento: number) {
+export async function deleteSentimento(
+  id_noticia: number,
+  id_sentimento: number
+) {
   return await fetch(
     `http://localhost:8000/sentimentos/${id_noticia}/${id_sentimento}`,
     {
