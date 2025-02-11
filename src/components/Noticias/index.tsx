@@ -40,7 +40,7 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
 
   const handleDelete = async (e: React.SyntheticEvent, id: number) => {
     e.stopPropagation();
-    if (confirm("Are you sure you want to delete this news?")) {
+    if (confirm("Você tem certeza que quer deletar essa notícia?")) {
       const res = await deleteNoticia(id);
 
       if (res.ok) {
@@ -96,7 +96,7 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
                     Fonte
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Score
+                    Pontuação
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Ações
@@ -143,13 +143,13 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
                           onClick={(e) => handleEdit(e, noticia)}
                           className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-md"
                         >
-                          Edit
+                          Editar
                         </button>
                         <button
                           onClick={(e) => handleDelete(e, noticia.id_noticia)}
                           className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-md"
                         >
-                          Delete
+                          Deletar
                         </button>
                       </td>
                     </tr>
@@ -161,7 +161,7 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
 
         {/* Add New Form */}
         <div className="bg-white text-gray-900 shadow-md rounded-lg p-6 mb-8">
-          <h2 className="text-xl font-semibold mb-6">Add New Notícia</h2>
+          <h2 className="text-xl font-semibold mb-6">Adicionar Nova Notícia</h2>
           <form className="space-y-4">
             <div>
               <label
@@ -273,7 +273,7 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
               onClick={handleCreate}
               className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Create
+              Criar
             </button>
           </form>
         </div>
@@ -282,7 +282,7 @@ export default function Noticias({ noticias, criptomoedas }: NProps) {
         {editingNoticia && (
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg text-gray-900 p-6 max-w-2xl w-full">
-              <h2 className="text-xl font-semibold mb-6">Edit Notícia</h2>
+              <h2 className="text-xl font-semibold mb-6">Editar Notícia</h2>
               <form className="space-y-4">
                 <div>
                   <label

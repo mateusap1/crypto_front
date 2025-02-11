@@ -48,13 +48,13 @@ export default function Sentimentos({
   };
 
   const handleDelete = async (id_sentimento: number) => {
-    if (confirm("Are you sure you want to delete this sentimento?")) {
+    if (confirm("Você tem certeza que quer deletar esse sentimento?")) {
       const res = await deleteSentimento(id_noticia, id_sentimento);
 
       if (res.ok) {
         window.location.reload();
       } else {
-        console.error("Error deleting sentimento:", await res.text());
+        console.error("Erro deletando o sentimento:", await res.text());
       }
     }
   };
@@ -90,7 +90,7 @@ export default function Sentimentos({
                     Sentimento
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Score
+                    Pontuação
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Actions
@@ -118,13 +118,13 @@ export default function Sentimentos({
                         onClick={() => handleEdit(s)}
                         className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 px-3 py-1 rounded-md"
                       >
-                        Edit
+                        Editar
                       </button>
                       <button
                         onClick={() => handleDelete(s.id_sentimento)}
                         className="text-red-600 hover:text-red-900 bg-red-50 px-3 py-1 rounded-md"
                       >
-                        Delete
+                        Deletar
                       </button>
                     </td>
                   </tr>
